@@ -3,6 +3,7 @@ const play = document.querySelector(".play");
 const endGame = document.querySelector("#endGame");
 
 const rules=["스트라이크!", "볼!","안타!","아웃!"];
+
 const baseballRule={
   "스트라이크!":{
     id:0,
@@ -22,19 +23,28 @@ const baseballRule={
     curValue:0}
 }
 
+
 function initScore(rule){
   baseballRule["스트라이크!"].curValue = 0;
   baseballRule["볼!"].curValue = 0;
   ++baseballRule[rule].curValue;
 }
+function checkOutScore(){
+  if(baseballRule["아웃!"].maxValue>=baseballRule["아웃!"].curValue)
+    return `다음 타자가 타석에 입장했습니다.`;
+  else
+    return ``;
+}
 
 function printCurrentScore(rule, movePlayer){
+  const curScore=`<br>${baseballRule["스트라이크!"].curValue}S ${baseballRule["볼!"].curValue}B ${baseballRule["아웃!"].curValue}O<br><br>`
+
   if(movePlayer===true){
-    play.innerHTML += `${rules[rule]} 다음 타자가 타석에 입장했습니다.<br>${baseballRule["스트라이크!"].curValue}S ${baseballRule["볼!"].curValue}B ${baseballRule["아웃!"].curValue}O<br><br>`; 
+    play.innerHTML += `${rules[rule]} ${checkOutScore()} ${curScore}`; 
   } else if(movePlayer===false){
-    play.innerHTML += `${rules[rule]}<br>${rules[rule] ==="스트라이크!"? "아웃!":"안타!"} 다음 타자가 타석에 입장했습니다.<br>${baseballRule["스트라이크!"].curValue}S ${baseballRule["볼!"].curValue}B ${baseballRule["아웃!"].curValue}O<br><br>`; 
+    play.innerHTML += `${rules[rule]}<br>${rules[rule] ==="스트라이크!"? "아웃!":"안타!"} ${checkOutScore()} ${curScore}`; 
   } else{
-    play.innerHTML += `${rules[rule]}<br>${baseballRule["스트라이크!"].curValue}S ${baseballRule["볼!"].curValue}B ${baseballRule["아웃!"].curValue}O<br><br>`;
+    play.innerHTML += `${rules[rule]} ${curScore}`;
   }
   return play.innerHTML;
 }
